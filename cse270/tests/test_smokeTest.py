@@ -11,6 +11,13 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.firefox.options import Options
 
+from selenium.webdriver.firefox.service import Service
+
+
+from webdriver_manager.firefox import GeckoDriverManager  # Install with `pip install webdriver-manager`
+
+
+
 class TestSmokeTest():
   # def setup_method(self, method):
   #   options = Options()
@@ -20,10 +27,11 @@ class TestSmokeTest():
 
   def setup_method(self, method):
     options = Options()
+    options.add_argument("--headless")
     options.set_preference("network.stricttransportsecurity.preloadlist", False)
     options.set_preference("security.ssl.enable_ocsp_stapling", False)
-    options.add_argument("--headless=new")  # Try running without headless mode first
-    service = Service("path/to/geckodriver")  # Make sure the path is correct
+
+    service = Service(GeckoDriverManager().install())  # Automatically installs the latest Geckodriver
     self.driver = webdriver.Firefox(service=service, options=options)
     self.vars = {}
   
